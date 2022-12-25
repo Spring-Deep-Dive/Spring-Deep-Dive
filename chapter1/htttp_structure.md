@@ -23,3 +23,8 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
     - Response message에서 사용할 HTTP 버전을 명시합니다.
 
 #### HTTP 헤더
+
+
+
+
+### HTTP Response
