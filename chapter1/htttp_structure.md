@@ -1,7 +1,9 @@
-## HTTP의 구조(spec)
+# HTTP의 구조(spec)
 
 - HTTP request: 클라이언트가 서버로 전달해서 서버의 동작을 야기하는 메세지
 - HTTP response: 요청에 대한 서버의 답변
+
+<img src="/assets/images/http/http_message_structure.png" width="450" height="370">
 
 HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청은 사전에 약속된 형태로 구조를 띄고 있습니다.
 
@@ -10,11 +12,40 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 > `빈줄`: 줄바꿈을 통해 요청에 대한 모든 메타 정보의 끝을 뜻함<br>
 > `본문`: 시작줄과 헤더에서 명시된 내용이 옵션으로 들어감
 
-시작 줄과 헤더를 묶어서 request header라고 하며, message body는 payload 또는 본문(body)이라고 합니다.
+<br>
+
+## 시작줄(stat-line)
+
+### Request
+
+<img src="/assets/images/http/http_request_sl.png" width="350" height="270">
+
+
+- HTTP 메소드
+    - GET, PUT, POST, HEAD, OPTIONS등과 같은 메소드를 명시하여 서버에 수행을 요청할 동작을 나타냅니다. 
+- 요청 타겟
+    - URL, 프로토콜, 포트, 도메인 절대 경로 등으로 구성되며, HTTP 메소드를 수행할 자원에 대한 정보입니다.
+- HTTP 버전
+    - Response message에서 사용할 HTTP 버전을 명시합니다.
 
 <br>
 
-### HTTP Header
+### Response
+<img src="/assets/images/http/http_response_sl.png" width="350" height="270">
+
+- HTTP 버전
+    - GET, PUT, POST, HEAD, OPTIONS등과 같은 메소드를 명시하여 서버에 수행을 요청할 동작을 나타냅니다. 
+- 상태 코드
+    - 요청에 대한 수행 결과와 실패 시 그 이유를 나타내는 상태코드입니다.
+- 상태 메시지
+    - 상태코드에 대한 짧은 설명입니다.
+
+
+
+
+<br>
+
+## HTTP Header
 
 <br>
 
@@ -24,10 +55,10 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 - Response Header(응답 헤더)
 - Representation Header(표현 헤더)
 
-여기서 HTTP 메시지가 요청인지 응답인지에 따라서 요청 또는 응답헤더가 구분됩니다.
+<br>
 
-
-- General header
+### 1) General header
+<br>
 
     요청과 응답 모두에 적용되지만, 바디에서 최종적으로 전송되는 데이터와는 관련이 없는 헤더
 
@@ -41,7 +72,7 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 <br>
 
-- Request header
+### 2) Request header
     
     HTTP 요청에서 사용되지만 메시지의 컨텐츠와 관련이 없는 패치될 리소스나 클라이언트 자체에 대한 자세한 정보를 포함하는 헤더
     - Host: 요청하려는 서버 호스트 이름과 포트번호
@@ -58,7 +89,7 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 <br>
 
-- Response Header
+### 3) Response Header
 
     위치 또는 서버 자체에 대한 정보(이름, 버전)과 같이 응답에 대한 부가적인 정보를 포함하는 헤더
 
@@ -71,7 +102,7 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 <br>
 
-- Representation Header
+### 4) Representation Header
 
     HTTP 메세지의 본문에 대한 메타 정보를 담습니다.
     - Content-type: 리소스의 media type 명시
@@ -90,40 +121,53 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 <br>
 
-#### Request body
 
-헤더에서 Entity Header가 존재한다면 request의 본문이 존재함을 의미합니다. 
+### HTTP Body
 
-GET, HEAD, DELETE, OPTIONS와 같은 리소스를 가져오는 요청엔 본문이 필요 없으며, POST와 같은 서버에 데이터를 전송하는 경우엔 본문을 포함합니다.
+#### HTTP Request
 
+헤더에서 Entity Header가 존재한다면 request의 본문이 존재함을 의미합니다. GET, HEAD, DELETE, OPTIONS와 같은 리소스를 가져오는 요청엔 본문이 필요 없으며, POST와 같은 서버에 데이터를 전송하는 경우엔 본문을 포함합니다.
 
-<br>
+```
+POST /test HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Length: 83
+Content-Type: application/json
+Host: google.com
+User-Agent: HTTPie/0.9.3
 
-### HTTP Request
-
-<br>
-
-#### 시작줄(stat-line)
-
-- HTTP 메소드
-    - GET, PUT, POST, HEAD, OPTIONS등과 같은 메소드를 명시하여 서버에 수행을 요청할 동작을 나타냅니다. 
-- 요청 타겟
-    - URL, 프로토콜, 포트, 도메인 절대 경로 등으로 구성되며, HTTP 메소드를 수행할 자원에 대한 정보입니다.
-- HTTP 버전
-    - Response message에서 사용할 HTTP 버전을 명시합니다.
-
-<br>
-
-#### Request 헤더
-
-
-대소문자 구분 없는 문자열 다음에 콜론(":")이 붙으며, 그 뒤에 오는 값은 헤더에 따라 달라집니다. 헤더는 값까지 포함해 한줄로 구성됩니다.
-
+{
+    "test_id": "tmp_12345567",
+    "order_id": "8237362"
+}
+```
+위의 예시는 HTTP Request 중 POST메소드를 이용해 HTML 폼 데이터를 전송하는 예시입니다.
 
 <br>
+<br>
+
+#### HTTP Response
+
+Request와 마찬가지로 모든 Response의 body가 존재하는것은 아닙니다.
+데이터를 전송할 필요가 없는 경우엔 body가 비어있게 됩니다.
+
+```
+HTTP/1.1 200 OK
+Date Sun, 98 Feb 2012 01:11:12 GMT
+Server: Apache/1.3.29 (Win32)
+Last-Modified: Sat, 07 Feb 2012
+ETag: "0-23-4024c3a5"
+Accept-Ranges: bytes
+Content-Length: 35
+Connection: close
+Content-Type: text/html
+
+<h1>My Home Page</h1>
+```
 
 ---
 
 <br>
 
-### HTTP Response
