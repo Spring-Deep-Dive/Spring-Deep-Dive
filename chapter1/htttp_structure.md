@@ -1,3 +1,5 @@
+<br>
+
 # HTTP의 구조(spec)
 
 - HTTP request: 클라이언트가 서버로 전달해서 서버의 동작을 야기하는 메세지
@@ -14,11 +16,16 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 <br>
 
+
+---
+
+<br>
+
 ## 시작줄(stat-line)
 
 ### Request
 
-<img src="/assets/images/http/http_request_sl.png" width="350" height="270">
+<img src="/assets/images/http/http_request_sl.png" width="350" height="330">
 
 
 - HTTP 메소드
@@ -31,7 +38,7 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 <br>
 
 ### Response
-<img src="/assets/images/http/http_response_sl.png" width="350" height="270">
+<img src="/assets/images/http/http_response_sl.png" width="320" height="350">
 
 - HTTP 버전
     - GET, PUT, POST, HEAD, OPTIONS등과 같은 메소드를 명시하여 서버에 수행을 요청할 동작을 나타냅니다. 
@@ -42,6 +49,11 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 
 
+
+<br>
+
+
+---
 
 <br>
 
@@ -122,9 +134,14 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 <br>
 
 
-### HTTP Body
+---
 
-#### HTTP Request
+<br>
+
+
+## HTTP Body
+
+### HTTP Request
 
 헤더에서 Entity Header가 존재한다면 request의 본문이 존재함을 의미합니다. GET, HEAD, DELETE, OPTIONS와 같은 리소스를 가져오는 요청엔 본문이 필요 없으며, POST와 같은 서버에 데이터를 전송하는 경우엔 본문을 포함합니다.
 
@@ -148,7 +165,7 @@ User-Agent: HTTPie/0.9.3
 <br>
 <br>
 
-#### HTTP Response
+### HTTP Response
 
 Request와 마찬가지로 모든 Response의 body가 존재하는것은 아닙니다.
 데이터를 전송할 필요가 없는 경우엔 body가 비어있게 됩니다.
@@ -166,8 +183,6 @@ Content-Type: text/html
 
 <h1>My Home Page</h1>
 ```
-
----
 
 <br>
 
