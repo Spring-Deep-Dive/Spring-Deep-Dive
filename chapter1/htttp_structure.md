@@ -143,7 +143,7 @@ HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청�
 
 ### HTTP Request
 
-헤더에서 Entity Header가 존재한다면 request의 본문이 존재함을 의미합니다. GET, HEAD, DELETE, OPTIONS와 같은 리소스를 가져오는 요청엔 본문이 필요 없으며, POST와 같은 서버에 데이터를 전송하는 경우엔 본문을 포함합니다.
+헤더에서 Entity Header가 존재한다면 request의 본문이 존재함을 의미합니다. GET, HEAD, DELETE, OPTIONS와 같은 리소스를 가져오는 요청엔 본문이 필요 없으며, POST,PUT 같은 서버에 데이터를 전송하는 경우엔 본문을 포함합니다.
 
 ```
 POST /test HTTP/1.1
