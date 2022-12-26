@@ -5,7 +5,7 @@
 - HTTP request: 클라이언트가 서버로 전달해서 서버의 동작을 야기하는 메세지
 - HTTP response: 요청에 대한 서버의 답변
 
-<img src="/assets/images/http/http_message_structure.png" width="450" height="370">
+<img src="/assets/images/http/http_message_structure.png" width="450" height="500">
 
 HTTP message는 ASCII로 인코딩된 텍스트 정보이며, 응답과 요청은 사전에 약속된 형태로 구조를 띄고 있습니다.
 
