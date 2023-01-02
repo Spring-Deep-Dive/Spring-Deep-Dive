@@ -190,13 +190,13 @@ public class Rectangle {
 class Square extends Rectangle {  
 
   @Override  
-  public void setWidth(final int width) {  
+  public void setWidth(int width) {  
         super.setWidth(width);  
         super.setHeight(width);  
   }  
 
   @Override  
-  public void setHeight(final int height) {  
+  public void setHeight(int height) {  
         super.setWidth(height);  
         super.setHeight(height);  
   }  
@@ -206,7 +206,7 @@ class Square extends Rectangle {
 정사각형은 직사각형이지만, 직사각형은 정사각형이 아니므로 Square 클래스를 따로 정의하였다. 여기서 높이가 너비보다 같거나 작을 경우 높이을 늘이는 메서드를 추가한다고 가정해보자.
 
 ```
-public void increaseHeight(final Rectangle rectangle) {  
+public void increaseHeight(Rectangle rectangle) {  
     if(rectangle.getHeight() <= rectangle.getWidth()) {  
         rectangle.setHeight(rectangle.getWidth() + 1);  
     }  
@@ -300,7 +300,7 @@ public class PayService {
 
     private SamsugPay samsungPay;  
 
-    public void setSamsungPay(final SamsungPay samsungPay) {  
+    public void setSamsungPay(SamsungPay samsungPay) {  
         this.samsungPay = samsungPay;  
     }  
 
@@ -326,7 +326,7 @@ public class PayService {
 
     private Pay pay;  
 
-    public void setPay(final Pay pay) {  
+    public void setPay(Pay pay) {  
         this.pay = pay;  
     }  
 
