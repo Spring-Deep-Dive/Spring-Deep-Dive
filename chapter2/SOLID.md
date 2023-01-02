@@ -326,7 +326,7 @@ public class PayService {
 
     private Pay pay;  
 
-    public void setSamsungPay(final Pay pay) {  
+    public void setPay(final Pay pay) {  
         this.pay = pay;  
     }  
 
