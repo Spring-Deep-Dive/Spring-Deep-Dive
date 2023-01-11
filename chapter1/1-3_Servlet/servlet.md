@@ -4,6 +4,10 @@
 
 `서블릿`은 자바를 사용하여 웹 어플리케이션을 개발하는데에 사용되는 기술이며, 이와 관련된 인터페이스와 클래스를 제공한다. 웹과 관련된 기술(request와 response를 처리 및 생성, JSP, Filter 등)을 사용하기 위해 서블릿의 인터페이스를 객체로 구현하여 기능을 사용한다.
 
+>그래서 서블릿이 뭔데?
+
+서블릿(클래스, 인터페이스)에서 명시하고 있는 규칙을 따라 구현되는 자바 웹 기술.
+
 
 ## Common Gateway Interface(CGI)
 <img src="/assets/images/servlet/servlet_cgi_process.png" width="450" height="500">
