@@ -10,7 +10,7 @@
 
 
 ## Common Gateway Interface(CGI)
-<img src="/assets/images/servlet/servlet_cgi_process.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_cgi_process.png">
 서블릿 이전에 사용하던 기술로, 서버사이드 스크립팅 언어이다. 클라이언트로부터 요청을 받고 응답을 처리해주는 과정과 같은 상호작용에 대한 기능을 제공한다.
 
 프로세스를 기반으로 동작하며, 요청을 보내는 클라이언트의 수가 증가하면 서버측에서 응답을 전송하는데에 지연이 발생하게 된다.
@@ -20,7 +20,7 @@
 <br>
 
 ## Servlet의 개념과 특징
-<img src="/assets/images/servlet/servlet_overview.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_overview.png">
 
 - 요청에 대해 쓰레드를 기반으로 작동한다
 - 자바를 기반으로 하여 플랫폼 독립적이며, JVM을 통해 관리된다.
