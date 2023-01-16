@@ -120,6 +120,6 @@ service()내부에서 doGet()과 같은 메소드를 호출하지만, 매 요청
 웹 서버는 문서를 전송하면서 last-modified 헤더를 함께 전송하는데, 문서에 대한 변경여부를 판별하도록 한다. 이전에 발생했던 GET요청에 대해 데이터 변경이 없었다면 doGet()를 실행시키지 않는다.
 
 
-참조: 'Servlet이란? 서블릿의 특징' https://healthdevelop.tistory.com/entry/tomcat2
-참조: 서블릿이란?(Servlet, Servlet Container, JSP) https://u0hun.tistory.com/11
-참조: Last Modified Times https://www.oreilly.com/library/view/java-servlet-programming/156592391X/ch03s06.html
+참조: 'Servlet이란? 서블릿의 특징' https://healthdevelop.tistory.com/entry/tomcat2<br>
+참조: 서블릿이란?(Servlet, Servlet Container, JSP) https://u0hun.tistory.com/11<br>
+참조: Last Modified Times https://www.oreilly.com/library/view/java-servlet-programming/156592391X/ch03s06.html<br>
