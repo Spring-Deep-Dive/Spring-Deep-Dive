@@ -20,7 +20,7 @@
 
 참조: 'Servlet이란? 서블릿이란?' https://jusungpark.tistory.com/15
 
-<img src="/assets/images/servlet/servlet_process_overview.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_process_overview.png">
 
 
 # 서블릿 컨테이너
@@ -45,7 +45,7 @@
 
 # 서블릿 동작 과정
 
-<img src="/assets/images/servlet/servlet_process.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_process.png">
 
 1. 클라이언트가 HTTP 요청을 서블릿 컨테이너로 전송
 2. 요청을 받은 서블릿 컨테이너는 HttpServletRequest, HttpServletResponse 객체 생성
