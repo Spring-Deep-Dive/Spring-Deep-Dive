@@ -1,8 +1,8 @@
 # 클라이언트-서버 동작 과정
 
 1. 서버측에서 TCP/IP연결을 위해 소켓을 오픈하고 대기
-2. 요청을 수신하고 HTTP 요청 메시지 파싱
-    HTTP method 및 URL, Content-Type 확인
+2. 요청을 수신하고 HTTP 요청 메시지 파싱<br>
+    HTTP method 및 URL, Content-Type 확인<br>
     HTTP 메시지 바디 내용 파싱
 3. 저장 프로세스 실행
 4. 비즈니스 로직 실행
@@ -20,12 +20,12 @@
 
 참조: 'Servlet이란? 서블릿이란?' https://jusungpark.tistory.com/15
 
-<img src="/assets/images/servlet/servlet_process_overview.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_process_overview.png">
 
 
 # 서블릿 컨테이너
-`서블릿 컨테이너`는 서블릿의 생명주기를 관리하고 요청에 따른 스레드를 생성하며 클라이언트의 요청을 받고 응답을 보낼 수 있도록 웹 서버와 소켓을 만들어서 통신하도록 해준다.
-이러한 서블릿 컨테이너는 `톰캣`이라는 웹 서버를 통해 지원받는데, 톰캣은 웹 서버와 연동하여 실행할 수 있는 자바 환경을 제공하며 자바 서버 페이지(JSP)와 자바 서블릿이 실행될 수 있는 환경을 제공한다.
+`서블릿 컨테이너` 또는 `웹 컨테이너`는 서블릿의 생명주기를 관리하고 요청에 따른 스레드를 생성하며 클라이언트의 요청을 받고 응답을 보낼 수 있도록 웹 서버와 소켓을 만들어서 통신하도록 해준다.<br>
+이러한 서블릿 컨테이너는 `톰캣`이라는 웹 서버를 통해 지원받는데, 톰캣은 웹 서버와 연동하여 실행할 수 있는 자바 환경을 제공하며 자바 서버 페이지(JSP)와 자바 서블릿이 실행될 수 있는 환경을 제공한다.<br>
 
 ## 서블릿 컨테이너의 역활
 - 통신 지원
@@ -45,7 +45,7 @@
 
 # 서블릿 동작 과정
 
-<img src="/assets/images/servlet/servlet_process.png" width="450" height="500">
+<img src="/assets/images/servlet/servlet_process.png">
 
 1. 클라이언트가 HTTP 요청을 서블릿 컨테이너로 전송
 2. 요청을 받은 서블릿 컨테이너는 HttpServletRequest, HttpServletResponse 객체 생성
@@ -115,11 +115,12 @@ protected void service(HttpServletRequest req, HttpServletResponse res) throws S
 }
 ```
 
-*last-modified & if-modified-since in service()
-service()내부에서 doGet()과 같은 메소드를 호출하지만, 매 요청마다 해당 메소드를 실행시키는것은 아니다. 
-웹 서버는 문서를 전송하면서 last-modified 헤더를 함께 전송하는데, 문서에 대한 변경여부를 판별하도록 한다. 이전에 발생했던 GET요청에 대해 데이터 변경이 없었다면 doGet()를 실행시키지 않는다.
+*last-modified & if-modified-since in service()<br>
+service()내부에서 doGet()과 같은 메소드를 호출하지만, 매 요청마다 해당 메소드를 실행시키는것은 아니다.<br>
+웹 서버는 문서를 전송하면서 last-modified 헤더를 함께 전송하는데, 문서에 대한 변경여부를 판별하도록 한다.<br>
+이전에 발생했던 GET요청에 대해 데이터 변경이 없었다면 doGet()를 실행시키지 않는다.
 
 
-참조: 'Servlet이란? 서블릿의 특징' https://healthdevelop.tistory.com/entry/tomcat2
-참조: 서블릿이란?(Servlet, Servlet Container, JSP) https://u0hun.tistory.com/11
-참조: Last Modified Times https://www.oreilly.com/library/view/java-servlet-programming/156592391X/ch03s06.html
+참조: 'Servlet이란? 서블릿의 특징' https://healthdevelop.tistory.com/entry/tomcat2<br>
+참조: 서블릿이란?(Servlet, Servlet Container, JSP) https://u0hun.tistory.com/11<br>
+참조: Last Modified Times https://www.oreilly.com/library/view/java-servlet-programming/156592391X/ch03s06.html<br>
