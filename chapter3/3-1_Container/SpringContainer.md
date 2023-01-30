@@ -154,7 +154,7 @@ XML 기반 ApplicationContext 생성
 
 >왜 계층을 나눠서 구성하는가?
 
-<img src="/assets/images/container/application_context_hierachey.png" width="450" height="500">
+<img src="/assets/images/container/application_context_hierachey.png" width="550" height="500">
 
 
 1. 구성을 나누게 될 경우, 애플리케이션 컨텍스트는 트리 형식으로 구조화될 수 있다. 이렇게 되면, 자식 노드들은 루트를 통해 설정을 공유할 수 있다. 반면 형제 노드끼리는 독립적이기때문에 기존 설정을 수정하지 않고 일부 빈 구성에 대한 변경이 가능하다.
