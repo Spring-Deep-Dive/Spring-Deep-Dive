@@ -48,8 +48,6 @@ java -jar target/XXX.jar --spring.profiles.active=test
 -   applciation-test.properties
 -   application-prod.properties
 
-이렇게 만든 properties 파일은 기본적인 properties보다 우선순위가 더 높기 때문에 기존의 값을 덮어쓴다.
-
 ---
 
 **include 를 통해 모듈화**
