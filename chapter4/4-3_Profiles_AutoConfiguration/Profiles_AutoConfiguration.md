@@ -8,7 +8,7 @@
 
 **@Profile 어노테이션**
 
-config package를 생성하고 각 Configuration Class를 만든 다음 아래와 같이 지정
+클래스를 만들고 아래와 같이 지정
 
 ```
 @Profile("test")
