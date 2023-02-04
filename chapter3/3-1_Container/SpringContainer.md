@@ -3,13 +3,18 @@
 
 `일반적인 의미의 컨테이너`: 인스턴스의 생명주기를 관리하며, 생성된 인스턴스들에게 추가적인 기능을 제공
 
-`IoC Container`: 빈의 의존성을 관리하고, 객체를 생성하며, 생성된 객체를 빈으로 등록시키는 등의 관리 수행
+`IoC Container`: 객체를 생성하고, 해당 객체의 의존성 등을 관리하며, 생성된 객체(빈)들의 생애를 관리한다.
+
+스프링은 두개의 컨테이너를 제공한다: `BeanFactory Container`, `ApplicationContext Container`
+
 
 <br>
 
 ---
 
 <br>
+
+
 
 ####  빈 팩토리
  `org.springframework.beans.factory.BeanFactory`
