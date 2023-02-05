@@ -49,6 +49,9 @@ Spring Boot는 자바 기반의 환경설정을 권장한다. 인터넷에서 �
 
 ### Auto-configuration
 Spring Boot의 auto-configuration은 `@EnableAutoConfiguration` 또는 `@SpringBootApplication`어노테이션을 통해 이루어지는데, 이는 `@Configuration` 클래스를 기반으로 한다.<br>
+<img src="/assets/images/spring-boot/spring-boot-starter-annotation.png">
+
+
 아래는 main메소드가 위치한 스프링 어플리케이션 실행 클래스의 `@SpringBootApplication`의 관계를 나타낸다.<br>
  `@Configuration` -> `@SpringBootConfiguration` -> `@SpringBootApplication`<br>
 
