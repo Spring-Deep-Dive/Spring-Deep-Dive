@@ -8,7 +8,7 @@
 
 **@Profile 어노테이션**
 
-config package를 생성하고 각 Configuration Class를 만든 다음 아래와 같이 지정
+클래스를 만들고 아래와 같이 지정
 
 ```
 @Profile("test")
@@ -47,8 +47,6 @@ java -jar target/XXX.jar --spring.profiles.active=test
 -   application.properties
 -   applciation-test.properties
 -   application-prod.properties
-
-이렇게 만든 properties 파일은 기본적인 properties보다 우선순위가 더 높기 때문에 기존의 값을 덮어쓴다.
 
 ---
 
