@@ -1,11 +1,12 @@
-public class ExamplePsa extends HttpServlet{
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+@Controller("/api/example")
+public class ServletExample2 {
+    @GetMapping("/cook")
+    protected String getCook() {
+        return "PSA Cook !";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    @PostMapping
+    protected int postExample() {
+        return 1;
     }
 }
