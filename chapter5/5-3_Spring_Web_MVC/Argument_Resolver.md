@@ -35,6 +35,27 @@ Argumennt Resolver는 수신한 요청(request)에 대한 데이터를 컨트롤
 ```
 
 ArguemntResolver는 컨트롤러를 통해 들어오는 파라미터를 가공하거나 추가 및 수정해야하는 경우에 사용될 수 있다.
+이러한 작업이 필요한 예시 상황은?
+- HttpSession에서 세션정보를 로드
+- HttpServletRequest에서 요청 url 및 IP 정보, 토큰 등 로드
+
+```Java
+@RestController
+public class SomeController {
+    @GetMapping("/foo")
+    public String getFoo(HttpServletRequest request, HttpServletResponse response) {
+        String authHeader = request.getHeader(AUTHORIZATION);
+        // ... do something with auth info
+    }
+
+    @GetMapping("/boo")
+    public String getBoo(HttpServletRequest request, HttpServletResponse response) {
+        String authHeader = request.getHeader(AUTHORIZATION);
+        // ... do something with auth info
+    }
+}
+
+```
 
 ## Argument Resolving Process
 1. Client request
@@ -61,6 +82,30 @@ NativeWebRequest 객체에 접근해서 클라이언트로부터 전달받은 �
 필요한 ArgumentResolver를 등록하기 위해서 해당 클래스를 생성하고, servlet-context.xml 또는 Configuration을 통해 Resolver를 등록한다.
 
 ```Java
+public class ResultJwtArgumentResolver implements HandlerMethodArgumentResolver {
+	@Autowired
+	private AuthService authService;
+
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return ResultJwt.class.isAssignableFrom(parameter.getParameterType());
+	}
+
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
+			WebDataBinderFactory binderFactory) throws Exception {
+                // return type은 본인이 Binding을 원하는 객체 Class
+                // supportsParameter에서 검증한 ResultJwt.class
+		return authService.getResultJwt(webRequest.getHeader("Authorization"));
+	}
+}
+
+```
+참조: https://velog.io/@gillog/Spring-HandlerMethodArgumentResolver-PathVariable-RequestHeader-RequestParam
+
+
+
+```Java
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -75,6 +120,36 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 
 ## Meesage Converter
+`Message Converter`는 HTTP request body와 response body를 메시지로 다루는 방식을 말한다.
+
+```Java
+@ResponseBody
+@PostMapping("/test")
+public String hello(@RequestBody String param){
+    return "result";
+}
+```
+위와 같은 controller method를 정의했을때, 스프링은 메시지 컨버터를 통해 HTTP 요청이나 응답을 메시지로 변환하게 된다.
+@RequestBody 어노테이션의 타입에 따라 메세지 컨버터를 선택하고, HTTP 요청 본문을 통째로 메시지로 변환하여 파라미터에 바인딩한다.
+메소드의 상단 @ResponseBody를 입력하여 리턴 타입에 맞는 메시지 컨버터를 선택하여 리턴 값을 메시지로 변환하여 리턴해준다.
+
+### Type of Message Converter
+
+이렇게 사용될 수 있는 메세지 컨버터는 AnnotationMethodHandlerAdapter를 통해 등록할 수 있고, 4가지의 기본 컨버터가 제공된다.
+
+- ByteArrayHttpMessageConverter
+    byte[] 타입 객체를 지원하며, 미디어타입은 모두 이것을 지원한다.
+    요청을 byte 배열 형태로 받을 수 있고, 응답인 경우엔 Content-Type application/stream으로 설정되어 전달된다.
+
+- StringHttpMessageConverter
+    String 객체 타입을 말하며, 미디어타입은 모두 이것을 지원한다.
+    요청에 대한 HTTP 본문을 문자열 형태로 받고, 응답의 경우엔 Content-Type text/plain으로 전달된다.
+
+- FormHttpMessageConverter
+    MultiValueMap<String, String> 객체 타입을 지원하며, 미디어타입은 application/x-www-form-urlencoded를 지원한다.
+
+- SourceHttpMessageConverter
+    XML문서를 Source 타입의 오브젝트로 변환할 때 사용된다.
 
 
 
