@@ -13,13 +13,14 @@ AOP는 프로그래밍 패러다임으로, 기존의 코드에 대한 수정 없
 ## 예제코드
 
 ```Java
-@Aspect // PointCut + Advice 조합의 AOP 기본 모듈
+@Aspect // Aspect: PointCut + Advice 조합의 AOP 기본 모듈
 @Component
 @Slf4j
 public class TimeTraceAop {
 
     @Around("execution(* springdeepdive.demoproject..*(..))") // PointCut: where to apply
     public Object execute(ProceedingJoinPoint jointPoint) throws Throwable {
+        // Advice: 부가기능
         long start = System.currentTimeMillis();
         log.debug("START: " + jointPoint.toShortString());
         System.out.println("START: " + jointPoint.toShortString());
@@ -45,14 +46,6 @@ public class TimeTraceAop {
 
 ## Glossary
 
-- Weaving (n.엮기)<br>
-
-> the process of linking aspect with other application types or objects to create an advised object.
-
-Aspect를 대상 객체에 연결시켜 Aspect-Oriented 객체로 만드는 과정을 뜻함.<br>
-즉, 비즈니스 로직에 Advice를 삽입시키는 것을 말함.<br><br>
-
-
 - Target<br>
 > (Where) 어떤 대상에게 기능을 부여할것인가?
 
@@ -71,7 +64,7 @@ MethodInterceptor처럼 메소드 호출 과정에 참여하기도 하며,<br>
 - Join Point<br>
 > (When) 언제 부가기능을 부여할 것인가?
 
-어드바이스가 적용될 수 있는 위치.<br>
+Advice의 부가기능을 수행할 '시점'<br>
 프록시 AOP에서 조인 포인트는 메소드의 실행단계를 말한다.<br>
 타깃 객체가 구현한 인터페이스의 모든 메소드가 조인 포인트가 된다.<br><br>
 
@@ -100,16 +93,24 @@ com.edu.aop 패키지의 모든 메소드<br><br>
 bean(someBean)<br>
 이름이 someBean인 빈의 모든 메소드<br><br>
 
-
-- Proxy<br>
-클라이언트와 타깃 사이에서 부가기능을 제공하는 객체를 말한다. DI를 통해서 타깃 대신 클라이언트에게 주입되며, 클라이언트의 메소드 호출을 대신 받아서 타깃에 위임해주면서, 그 과정에서 부가기능을 부여하게 된다. 스프링은 전적으로 프록시를 통해 AOP기능을 제공한다.<br><br>
-
 - Adviser<br>
 포인트컷과 어드바이스를 하나씩 지닌 객체이다. 어드바이저는 어떤 부가기능을 어디에 전달할지 알고 있는 AOP의 기본 모듈이다. <br><br>
 
 - Aspect<br>
 한개 또는 그 이상의 포인트컷+어드바이스 조합으로 만들어진 AOP의 기본 모듈.<br>
 싱글톤 형태로 존재하며, Adviser는 아주 단순한 형태의 Aspect라고 할 수 있다.<br><br>
+
+- Weaving (n.엮기)<br>
+
+> the process of linking aspect with other application types or objects to create an advised object.
+
+Aspect를 대상 객체에 연결시켜 Aspect-Oriented 객체로 만드는 과정을 뜻함.<br>
+즉, 비즈니스 로직에 Advice를 삽입시키는 것을 말함.<br><br>
+
+- Proxy<br>
+클라이언트와 타깃 사이에서 부가기능을 제공하는 객체를 말한다. DI를 통해서 타깃 대신 클라이언트에게 주입되며, 클라이언트의 메소드 호출을 대신 받아서 타깃에 위임해주면서, 그 과정에서 부가기능을 부여하게 된다. 스프링은 전적으로 프록시를 통해 AOP기능을 제공한다.<br><br>
+
+
 
 <br>
 
@@ -137,21 +138,17 @@ AspectJ는 완전한 AOP를 제공하기 위한 기술로, Aspect Weaving을 위
 
 ## Weaving
 
-- Post-Compile / Runtime Weaving (RTW)
-스프링 AOP의 기본 설정.
-Proxy 사용 방법으로 Runtime시에 핵심코드와 Advice를 호출.
+- Post-Compile / Runtime Weaving (RTW)<br>
+스프링 AOP의 기본 설정.<br>
+Proxy 사용 방법으로 Runtime시에 핵심코드와 Advice를 호출.<br><br>
 
 
 
-- Compile-Time Weaving (CTW)
-AspectJ모듈에서 지원되는 방식.
-핵심코드와 Advice를 compile시에 병합(merge).
+- Compile-Time Weaving (CTW)<br>
+AspectJ모듈에서 지원되는 방식.<br>
+핵심코드와 Advice를 compile시에 병합(merge).<br><br>
 
 
-
-
-
-
-- Load-Time Weaving (LTW)
-AspectJ모듈에서 지원되는 방식.
-프로세스가 시작될 때 핵심코드와 Advice를 조합.
+- Load-Time Weaving (LTW)<br>
+AspectJ모듈에서 지원되는 방식.<br>
+프로세스가 시작될 때 핵심코드와 Advice를 조합.<br><br>
