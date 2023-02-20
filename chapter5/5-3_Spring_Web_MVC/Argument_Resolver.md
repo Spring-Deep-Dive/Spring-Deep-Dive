@@ -73,7 +73,6 @@ HandlerMethodArgumentResolver 인터페이스에서 정의된 `supportsParameter
 https://github.com/spring-projects/spring-framework/blob/v5.0.0.RELEASE/spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerAdapter.java
 
 
-
 ### 구현 메소드 - resolveArguemnt()
 resolveArgument()는 실제의 파라미터와 바인딩하여 리턴할 객체를 생성하는 메소드이다.
 NativeWebRequest 객체에 접근해서 클라이언트로부터 전달받은 요청의 파라미터를 컨트롤러에게 전달하기 전에 필요한 작업을 수행한다.
@@ -101,6 +100,7 @@ public class ResultJwtArgumentResolver implements HandlerMethodArgumentResolver 
 }
 
 ```
+
 참조: https://velog.io/@gillog/Spring-HandlerMethodArgumentResolver-PathVariable-RequestHeader-RequestParam
 
 
