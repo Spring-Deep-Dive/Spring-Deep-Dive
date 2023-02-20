@@ -120,7 +120,63 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 
 ## Meesage Converter
-`Message Converter`는 HTTP request body와 response body를 메시지로 다루는 방식을 말한다.
+`Message Converter`는 request의 본문에서 메시지를 읽어들이거나, response 본문에 메시지를 작성할 때 사용하는 컨버터를 말한다.<br>
+Controller의 @ResponseBody를 통해서 HttpMessageConverter를 호출하고, return 타입에 따라서 JsonConverter 또는 StringConverter를 통해 response를 리턴하게 된다.
+
+### HttpMessageConverter 인터페이스
+
+```Java
+
+/**
+    Strategy interface for converting from and to HTTP requests and responses.
+*/
+public interface HttpMessageConverter<T> {
+
+    /**
+        Indicates whether the given class can be read/written by this convertier.
+    */
+    boolean canRead(Class<?> clazz, @Nullable MediaType mediaType);
+    boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType);
+
+    List<MediaType> getSupportedMediaTypes();
+
+    /**
+        Return the list of media types supported by this converter.
+    */
+    default List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
+		return (canRead(clazz, null) || canWrite(clazz, null) ?
+				getSupportedMediaTypes() : Collections.emptyList());
+	}
+
+    /**
+        Read an object of the given type from the given input message, and returns it.
+    */
+    T read(Class<? extends T> clazz, HttpInputMessage inputMessage)
+			throws IOException, HttpMessageNotReadableException;
+
+    /**
+        Write a given object to the given output message.
+    */
+    void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage)
+    throws IOException, HttpMessageNotWritableException;
+}
+
+```
+
+스프링의 MessageConverter는 위의 인터페이스를 기반으로 구현된다.
+
+### Type of Message Converter
+
+이렇게 사용될 수 있는 메세지 컨버터는 AnnotationMethodHandlerAdapter를 통해 등록할 수 있고, 4가지의 기본 컨버터가 제공된다.
+
+- ByteArrayHttpMessageConverter
+- StringHttpMessageConverter
+- FormHttpMessageConverter
+- SourceHttpMessageConverter
+- MappingJacksonHttpMessageConverter
+
+### 동작 예시
+
 
 ```Java
 @ResponseBody
@@ -133,23 +189,14 @@ public String hello(@RequestBody String param){
 @RequestBody 어노테이션의 타입에 따라 메세지 컨버터를 선택하고, HTTP 요청 본문을 통째로 메시지로 변환하여 파라미터에 바인딩한다.
 메소드의 상단 @ResponseBody를 입력하여 리턴 타입에 맞는 메시지 컨버터를 선택하여 리턴 값을 메시지로 변환하여 리턴해준다.
 
-### Type of Message Converter
 
-이렇게 사용될 수 있는 메세지 컨버터는 AnnotationMethodHandlerAdapter를 통해 등록할 수 있고, 4가지의 기본 컨버터가 제공된다.
+`그렇다면 메시지 컨버터는 전체 동작과정 중 어디에 위치하나?`
 
-- ByteArrayHttpMessageConverter
-    byte[] 타입 객체를 지원하며, 미디어타입은 모두 이것을 지원한다.
-    요청을 byte 배열 형태로 받을 수 있고, 응답인 경우엔 Content-Type application/stream으로 설정되어 전달된다.
+<img src="/assets/images/MVC/message_converter.png">
 
-- StringHttpMessageConverter
-    String 객체 타입을 말하며, 미디어타입은 모두 이것을 지원한다.
-    요청에 대한 HTTP 본문을 문자열 형태로 받고, 응답의 경우엔 Content-Type text/plain으로 전달된다.
+ArugmentResolver에 request의 파라미터가 @RequestBody 또는 HttpEntity인 경우, HTTP 메시지 컨버터를 사용해 'read'작업을 수행한다. response의 경우, @ResponseBody 또는 HttpEntity를 처리하는 ReturnValueHandler에서 메시지 컨버터를 호출해 응답 결과에 대한 'write'작업을 수행한다.
 
-- FormHttpMessageConverter
-    MultiValueMap<String, String> 객체 타입을 지원하며, 미디어타입은 application/x-www-form-urlencoded를 지원한다.
 
-- SourceHttpMessageConverter
-    XML문서를 Source 타입의 오브젝트로 변환할 때 사용된다.
 
 
 
