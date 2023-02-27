@@ -33,18 +33,6 @@ public @interface Transactional {
 기본적인 트랜잭션 타입(TxType)과 Rollback(rollbackOn()) 정도만 구현되어있다.
 
 
-- `Transactional` from org.springframework.transaction.annotation
-
-
-> Describes a transaction attribute on an individual method or on a class.
-When this annotation is declared at the class level, it applies as a default to all methods of the declaring class and its subclasses. Note that it does not apply to ancestor classes up the class hierarchy; inherited methods need to be locally redeclared in order to participate in a subclass-level annotation. For details on method visibility constraints, consult the Transaction Management  section of the reference manual.
-This annotation is generally directly comparable to Spring's org.springframework.transaction.interceptor.RuleBasedTransactionAttribute class, and in fact AnnotationTransactionAttributeSource will directly convert this annotation's attributes to properties in RuleBasedTransactionAttribute, so that Spring's transaction support code does not have to know about annotations.
-Attribute Semantics
-If no custom rollback rules are configured in this annotation, the transaction will roll back on RuntimeException and Error but not on checked exceptions.
-Rollback rules determine if a transaction should be rolled back when a given exception is thrown, and the rules are based on patterns. A pattern can be a fully qualified class name or a substring of a fully qualified class name for an exception type (which must be a subclass of Throwable), with no wildcard support at present. For example, a value of "javax.servlet.ServletException" or "ServletException" will match javax.servlet.ServletException and its subclasses.
-Rollback rules may be configured via rollbackFor/noRollbackFor and rollbackForClassName/noRollbackForClassName, which allow patterns to be specified as Class references or strings, respectively. When an exception type is specified as a class reference its fully qualified name will be used as the pattern. Consequently, @Transactional(rollbackFor = example.CustomException.class) is equivalent to @Transactional(rollbackForClassName = "example.CustomException").
-
-
 ## from springframework
 
 ```JAVA
@@ -82,9 +70,4 @@ public @interface Transactional {
 }
 ```
 
-- `Transactional` from javax.transaction
-
-> The javax.transaction.Transactional annotation provides the application the ability to declaratively control transaction boundaries on CDI managed beans, as well as classes defined as managed beans by the Jakarta EE specification, at both the class and method level where method level annotations override those at the class level.
-See the Jakarta Enterprise Beans specification for restrictions on the use of @Transactional with Jakarta Enterprise Beans.
-This support is provided via an implementation of CDI interceptors that conduct the necessary suspending, resuming, etc. The Transactional interceptor interposes on business method invocations only and not on lifecycle events. Lifecycle methods are invoked in an unspecified transaction context.
 
