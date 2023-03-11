@@ -56,12 +56,13 @@ public class Team {
 @Entity
 public class Member {
 	@Id @GeneratedValue
-	private Long id;
+	@Column(name = "MEMBER_ID")
+	private Long memberId;
 
 	@Column(name = "USERNAME")
 	private String name;
 	
-	@ManyToOne // Member의 입장에서 Many가 된다.
+	@ManyToOne
 	@JoinColumn(name = "TEAM_ID") 
 	private Team team; // Team 객체
 }
@@ -69,14 +70,12 @@ public class Member {
 @Entity
 public class Team {
 	@Id @GeneratedValue
-	@Column(name = "MEMBER_ID")
-	private Long id;
-
-	@Column(name = "USERNAME")
-	private String name;
-
 	@Column(name = "TEAM_ID")
 	private Long teamId;
+
+	private String nickname;
+
+	
 }
 
 ```
@@ -102,6 +101,21 @@ Team findTeam = findMember.getTeam();
 하지만 이때, Member에서는 Team으로 접근이 가능하지만, Team에서는 소속 Member에 접근할 수 없다.
 이렇게 한쪽만 참조/접근이 가능한 관계를 단방향 연관관계라고 한다.
 
+위의 코드를 활용한 테이블 상황
+
+- Member 테이블
+
+| MEMBER_ID | AGE | NICKNAME | TEAM_ID |
+| :-:       | :-: | :-:      | :-:     |
+| 1         | 20  | John     | 1       |
+
+- Team 테이블
+
+| TEAM_ID | NAME    | 
+| :-:     | :-:     |
+| 1       | TeamOne |
+
+
 ### 양방향 연관관계 매핑
 
 
@@ -113,8 +127,7 @@ public class Member {
 	@Id @GeneratedValue
 	private Long id;
 
-	@Column(name = "USERNAME")
-	private String name;
+	private String nickname;
 	
 	@ManyToOne // Member의 입장에서 Many가 된다.
 	@JoinColumn(name = "TEAM_ID") 
@@ -124,18 +137,16 @@ public class Member {
 @Entity
 public class Team {
 	@Id @GeneratedValue
-	@Column(name = "MEMBER_ID")
-	private Long id;
+	@Column(name = "TEAM_ID")
+	private Long teamId;
 	
-	// Team(One)기준으로 Member(Many)이 여럿이다.
-	@OneToMany(mappedBy = "team") // Member클래스에서는 team이라는 이름으로 필드 선언됨
-	private List<Member> members = new ArrayList<>(); // 추가된 필드
-
 	@Column(name = "USERNAME")
 	private String name;
 
-	@Column(name = "TEAM_ID")
-	private Long teamId;
+
+	@OneToMany(mappedBy = "team") 
+	private List<Member> members = new ArrayList<>(); // 추가된 필드
+
 }
 ```
 
@@ -158,6 +169,48 @@ em.clear();
 Member findMember = em.find(Member.class, member.getId());
 List<Member> members = findMember.getTeam().getMembers(); // 해당 팀에 속한 모든 멤버 로드
 ```
+
+위의 예시를 통한 데이터베이스 상황
+
+- Member 테이블
+
+| MEMBER_ID | AGE | NICKNAME | TEAM_ID |
+| :-:       | :-: | :-:      | :-:     |
+| 1         | 20  | John     | 1       |
+
+- Team 테이블
+
+| TEAM_ID | NAME    | 
+| :-:     | :-:     |
+| 1       | TeamOne |
+
+앞서 예시코드와 달라진점은 Team에서 Members가 추가되었다는 점이다.
+Members에 대해 직접 추가하지 않았지만, 조회 시 `mappedBy`옵션을 통해 실제 쿼리에서 join을 통해 조회하게 된다.
+
+```SQL
+select
+        m1_0.member_id,
+        m1_0.nickname,
+        t1_0.team_id,
+        t1_0.name 
+    from
+        member m1_0 
+    left join
+        team t1_0 
+            on t1_0.team_id=m1_0.team_id 
+    where
+        m1_0.member_id=?
+
+```
+
+위의 코드는 Team의 members를 조회하는 SQL쿼리이다.
+
+<br>
+
+---
+
+<br>
+
 
 ## 연관관계의 주인(Owner)과 mappedBy
 
@@ -227,6 +280,25 @@ member.setName("member1");
 team.getMembers().add(member);
 em.persist(member);
 ```
+
+위 코드에 대한 DB의 상황
+
+
+
+- Member 테이블
+
+| MEMBER_ID  | NICKNAME | TEAM_ID |
+| :-:        | :-:      | :-:     |
+| 1          | John     | <null>  |
+
+- Team 테이블
+
+| TEAM_ID | NAME    | 
+| :-:     | :-:     |
+| 1       | TeamA   |
+
+
+
 위의 예시코드를 실행 시, 실제 DB에 Member테이블에 TEAM_ID(FK)는 null이 들어가게 된다.<br>
 member에서 team에 대한 지정을 해주지 않았기때문이다.<br>
 
@@ -241,13 +313,12 @@ em.persist(team);
 
 Member member = new Member();
 member.setName("member1");
-member.setTeam(team);
+member.setTeam(team); // Member-Team간의 연관관계를 맺도록 하는 코드 부분
 em.persist(member);
 
-team.getMembers().add(member); // 실질적으로 안해도 JPA가 해주는 코드지만, 객체지향적 코드를 위해 작성
+team.getMembers().add(member); // 연관관계 매핑에 대해 명시적으로 표현하기 위함
 
 ```
-> JPA가 해준다라기보단 테이블 상으로 연관관계를 맺어준다고 하는것이 더 옳은것으로 보임
 
 
 
@@ -255,13 +326,18 @@ team.getMembers().add(member); // 실질적으로 안해도 JPA가 해주는 코
 // in Team 클래스
 // 메소드에서 양방향 지정하는 것이 좋다.
 public void addMember(Member member) {
-	this.members.add(member);
 	member.setTeam(this);
+	this.members.add(member);
 }
 ```
 
-단방향 매핑만으로도 이미 연관관계는 매핑되며, 단지 양방향 매핑과의 차이는 그래프 탐색기능을 통해 반대 방향에 대한 조회가 객체 레벨에서 가능하다는 것이다. 따라서, 양방향 매핑은 필요에 따라 추가하면 되며, 해당 여부는 테이블에 영향을 미치지 않는다.
+자바(JPA) 수준에서 단방향 매핑만으로도 이미 연관관계는 매핑되며, DB상으로 FK를 통해 관계가 설정된다.<br>
+양방향 매핑과의 차이는 그래프 탐색기능을 통해 자바 수준에서 반대 방향(Team->Member)에 대한 조회가 가능하다는 것이다.<br>
+따라서 양방향 매핑은 필요에 따라, 반대 방향에 대한 조회가 필요한 경우 적용하면 되며, 이는 테이블에 영향을 미치지 않는다.<br>
+
 > 가능하면 양방향 매핑을 피하도록 한다.
+- 양방향 매핑으로 인해 순환이 발생할 수 있다.
+- 양방향으로 설정함으로 엔티티 간 관계 복잡도가 증가될 수 있다.
 
 
 
