@@ -30,7 +30,7 @@
 
 ## 진행 논의
 
-[양식 (1)](https://www.notion.so/1-5723ed644f2c4159a40db7fd5113804f)
+[목차 분배 (1)](https://www.notion.so/0605cd4f20624dc09d8babd401617924)
 
 # 목차
 
