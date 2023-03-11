@@ -340,4 +340,145 @@ public void addMember(Member member) {
 - 양방향으로 설정함으로 엔티티 간 관계 복잡도가 증가될 수 있다.
 
 
+<br>
+
+---
+
+<br>
+
+Member가 연관관계의 주인으로 설정한 상태.
+이 상태에서, Team과 Member의 관계 설정을 위해 Member에 team을 변경한다.
+하지만, Team의 Members에 cascade 옵션을 설정하는 방법은 어떨까?
+Member가 연관관계의 주인이기에, Member에 team에 대한 변경을 적용 해야하지만,
+Team에서 member를 변경시키면 cascading 옵션으로 Member으로 전이가 일어나지 않을까?
+
+```Java
+public class Member {
+
+
+    @Id
+    private Long memberId;
+
+    private String nickname;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+}
+
+public class Team {
+	
+    @Id    
+    private Long teamId;
+
+    private String name;
+
+    @OneToMany(mappedBy = "memberId")
+    private List<Member> members = new ArrayList<>();
+
+}
+```
+
+위의 상황에서, Team의 members는 memberId를 기반으로 매핑되도록 설정되었다.
+Member는 TEAM_ID(FK)를 기반으로 연관관계 매핑이 되어있다.
+이에 대한 실행한 예제 코드는 아래와 같다.
+
+```Java
+public void test2() {
+        Team team = new Team();
+        team.setName("TeamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setNickname("John");
+		//member.setTeam(team);
+
+        team.getMembers().add(member);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        Team findTeam = em.find(Team.class, 1L);
+        System.out.println(findTeam.getMembers().get(0).getNickname()); // John
+
+		Member findMember = em.find(Member.class, 1L);
+        System.out.println(findMember.getTeam()); // null
+    }
+
+```
+이와 같을 때, DB상태는 아래와 같다.
+
+- Member 테이블
+
+| MEMBER_ID  | NICKNAME | TEAM_ID |
+| :-:        | :-:      | :-:     |
+| 1          | John     | <null>  |
+
+- Team 테이블
+
+| TEAM_ID | NAME    | 
+| :-:     | :-:     |
+| 1       | TeamA   |
+
+Team에서는 Member에 대한 조회가 가능하다(?)
+반면, Member에서는 Team에 대한 조회가 불가하다. 당연히도 FK(TEAM_ID)가 설정안되있으니.
+
+
+
+```Java
+public class Member {
+
+
+    @Id
+    private Long memberId;
+
+    private String nickname;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+}
+
+public class Team {
+	
+    @Id    
+    private Long teamId;
+
+    private String name;
+
+    @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL)
+    private List<Member> members = new ArrayList<>();
+
+}
+```
+
+이번에는 Team에서 Member와 연결된 부분에 cascade옵션을 추가했다.
+같은 테스트코드를 실행하면 동일한 결과가 발생한다.
+
+```Java
+public void test2() {
+        Team team = new Team();
+        team.setName("TeamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setNickname("John");
+		//member.setTeam(team);
+
+        team.getMembers().add(member);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        Team findTeam = em.find(Team.class, 1L);
+        System.out.println(findTeam.getMembers().get(0).getNickname()); // John
+
+		Member findMember = em.find(Member.class, 1L);
+        System.out.println(findMember.getTeam()); // null
+    }
+```
+
+이를 통해 알 수 있는 것은 Member가 연관관계 주인일 때, 매핑하는 쪽(Team)에  변화를 주고 cascading 옵션을 주더라도 전이가 되지 않는다. 
 
