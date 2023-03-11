@@ -230,6 +230,8 @@ em.persist(member);
 위의 예시코드를 실행 시, 실제 DB에 Member테이블에 TEAM_ID(FK)는 null이 들어가게 된다.<br>
 member에서 team에 대한 지정을 해주지 않았기때문이다.<br>
 
+> Cascading 옵션으로 가능한지?
+
 ### Recommend Practice
 
 ```JAVA
@@ -245,6 +247,8 @@ em.persist(member);
 team.getMembers().add(member); // 실질적으로 안해도 JPA가 해주는 코드지만, 객체지향적 코드를 위해 작성
 
 ```
+> JPA가 해준다라기보단 테이블 상으로 연관관계를 맺어준다고 하는것이 더 옳은것으로 보임
+
 
 
 ```Java
