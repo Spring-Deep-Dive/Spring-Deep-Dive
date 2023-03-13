@@ -338,3 +338,36 @@ public class Welfare {
 ```
 
 `mappedBy`를 통해서 양방향 설정을 할 수 있다.
+
+```JAVA
+Welfare w = new Welfare();
+        w.setName("foo");
+        w.setPrice(1000L);
+        em.persist(w);
+
+        Team t1 = new Team();
+        t1.setName("TeamOne");
+        t1.getWelfares().add(w);
+        w.getTeams().add(t1);
+        em.persist(t1);
+
+        em.flush();
+        em.clear();
+
+
+        Team findTeam = em.find(Team.class, 1L);
+        Welfare findWelfare = em.find(Welfare.class, 1L);
+
+        System.out.println(findTeam.getWelfares().get(0).getName());
+        System.out.println(findWelfare.getTeams().get(0).getName());
+
+```
+
+Team에서도 Welfare를 조회할 수 있고, Welfare에서도 등록된 Team을 조회할 수 있다.<br>
+
+### 다대다 연결 테이블만의 한계
+
+단순히 `team` - `welfare` 엔티티 간에 매핑만 해야하는 상황이라면 위의 예시처럼 연결 테이블을 사용하도록 하고, 엔티티 간 직접 연결해서 사용할 수 있다.<br>
+하지만, Team에서 Welfare에 대한 추가정보(만료기간, 유용횟수 등 메타데이터)가 필요하다면, 두 테이블을 연결하는 `연결 엔티티`를 사용해야 한다.<br>
+확장성을 고려한다면 직접 엔티티를 연결하기 보단 연결 엔티티를 사용하는 것이 좋다.<br>
+
