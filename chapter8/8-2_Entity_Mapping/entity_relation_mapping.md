@@ -424,7 +424,11 @@ public void test2() {
 Team에서는 Member에 대한 조회가 가능하다(?)
 반면, Member에서는 Team에 대한 조회가 불가하다. 당연히도 FK(TEAM_ID)가 설정안되있으니.
 
+<br>
 
+---
+
+<br>
 
 ```Java
 public class Member {
