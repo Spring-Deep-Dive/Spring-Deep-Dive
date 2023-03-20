@@ -182,3 +182,4 @@ SELECT * FROM ORDERS WHERE MEMBER_ID IN ( ?,?,?,?,? );
 
 이외에도 N+1문제를 해결하는 방법은 존재한다.<br>
 SQLMapper를 이용하거나 JDBC로 네이티브 쿼리를 정의하거나, 엔티티 그래프, QueryDSL을 사용할 수 있다.<br>
+참조: https://jojoldu.tistory.com/165
