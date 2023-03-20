@@ -26,3 +26,9 @@ public interface ItemRepository extends JpaRepository<Order, Long> {
 
 
 
+## How JPA generate query by method name internally?
+
+JPA는 쿼리 메소드를 criteria API를 사용하여 생성한다.<br>
+인터페이스에 메소드 이름을 정의하면, JPA가 해당 메소드 이름을 convention과 비교하여 실제 쿼리를 생성하는 것이다.<br>
+JPA는 내부적으로 메소드를 criteria query로 변경시키며, 정의한 리턴 타입과 파라미터에 따라 적용시킨다<br>
+
