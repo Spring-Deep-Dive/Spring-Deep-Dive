@@ -18,13 +18,16 @@ Lazy는 root 엔티티가 호출될 때, root 엔티티만 로드하여 영속�
 
 - Java의 컬렉션
 
+
 | 자바 컬렉션 | 중복 허용 | 순서 보장 |
 | : - :    |  : - :  | : - :   |
 | Set    | X | X |
 | List | O | O |
 | Map | X | X |
 
+
 - Hibernate의 내장 컬렉션
+
 | 인터페이스 | 내장 컬렉션 | 중복 허용 | 순서 보관 |
 | Collection, List, | PersistenceBag | O | X |
 | Set | PersistenceSet | X | X |
@@ -77,8 +80,10 @@ TEAM 내부에서 Member의 순서를 지정하기 위해 Position이라는 값�
 
 - Member 테이블
 
+
 | MEMBER_ID | NAME | POSITION | TEAM_ID |
 | :-: | :-: | :-: | :-: |
+
 
 - 연관관계의 주인(Team)이 다른 엔티티(Member)의 테이블을 관리하게 된다.
     POSITION은 Member테이블에 속해있지만, Member엔티티는 POISITION 값에 대해 알 수 없다.<br>
