@@ -134,20 +134,18 @@ constructor 방식은 DTO의 생성자에 바인딩 하는 것이 아니라, Exp
 @ToString
 public class AccountDto {
 
-    private int a;
     private String n;
+    private int a;
 
     @QueryProjection
-    public AccountDto(int a, String n) {
-        this.a = a;
+    public AccountDto(String n, int a) {
         this.n = n;
+        this.a = a;
     }
 }
 ```
 
 DTO에 All Arguments Constructor를 만들고, @QueryProjection을 붙여준다.
-
-다만 위와 다르게 생성자의 파라미터의 순서를 바꿔줬다.
 
 컴파일을 해보면 다음과 같은 자바 파일이 생성돼있음을 확인할 수 있다.
 
@@ -158,7 +156,7 @@ public class QAccountDto extends ConstructorExpression<AccountDto> {
     private static final long serialVersionUID = -153527146L;
 
     public QAccountDto(com.querydsl.core.types.Expression<Integer> a, com.querydsl.core.types.Expression<String> n) {
-        super(AccountDto.class, new Class<?>[]{int.class, String.class}, a, n);
+        super(AccountDto.class, new Class<?>[]{int.class, String.class}, n, a);
     }
 
 }
@@ -168,7 +166,7 @@ public class QAccountDto extends ConstructorExpression<AccountDto> {
 
 ```
 List<AccountDto> result = queryFactory
-            .select(new QAccountDto(account.age, account.name))
+            .select(new QAccountDto(account.age, account.name)) // 순서 바꾸면 컴파일 에러
             .from(account)
             .fetch();
 ```
